@@ -40,10 +40,11 @@ namespace UltimateASP.Services
         {
             var JwtSettings = _configuration.GetSection("Jwt");
             var token = new JwtSecurityToken(
-                    issuer: JwtSettings.GetSection("validIssuer").Value,
+                    issuer: JwtSettings.GetSection("Issuer").Value,
+                    audience: JwtSettings.GetSection("Audience").Value,
                     claims: claims,
                     signingCredentials: signingCredential,
-                    expires: DateTime.Now.AddMinutes(Convert.ToDouble(JwtSettings.GetSection("lifetime").Value))
+                    expires: DateTime.UtcNow.AddDays(7)
                 );
             return token;
         }
@@ -54,8 +55,6 @@ namespace UltimateASP.Services
             {
                 new Claim(ClaimTypes.Name, _apiUser.UserName),
                 new Claim(ClaimTypes.MobilePhone, _apiUser.PhoneNumber)
-
-
             };
             var roles = await _userManager.GetRolesAsync(_apiUser);
             foreach(var role in roles)

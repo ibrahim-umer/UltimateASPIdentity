@@ -42,7 +42,8 @@ namespace UltimateASP.Controllers
             }
         }
 
-        [HttpGet("{Id:int}"), Authorize(Roles = "Admin")]
+        [HttpGet("{Id:int}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Get(int Id)
         {
             try
